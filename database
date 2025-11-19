@@ -1,0 +1,54 @@
+CREATE DATABASE IF NOT EXISTS clinica_citas;
+USE clinica_citas;
+
+-- Tabla de usuarios
+CREATE TABLE usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    telefono VARCHAR(20),
+    rol ENUM('cliente', 'admin') DEFAULT 'cliente',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Tabla de servicios
+CREATE TABLE servicios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    descripcion TEXT,
+    duracion INT NOT NULL COMMENT 'Duración en minutos',
+    precio DECIMAL(10,2) NOT NULL,
+    disponible BOOLEAN DEFAULT true,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Tabla de citas
+CREATE TABLE citas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    servicio_id INT NOT NULL,
+    fecha DATE NOT NULL,
+    hora TIME NOT NULL,
+    estado ENUM('pendiente', 'confirmada', 'cancelada', 'completada') DEFAULT 'pendiente',
+    notas TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+    FOREIGN KEY (servicio_id) REFERENCES servicios(id) ON DELETE CASCADE,
+    UNIQUE KEY unique_cita (usuario_id, fecha, hora)
+);
+
+-- Insertar usuario administrador por defecto
+INSERT INTO usuarios (nombre, email, password, rol) 
+VALUES ('Admin', 'admin@clinica.com', '$argon2id$v=19$m=65536,t=3,p=4$placeholder', 'admin');
+
+-- Insertar algunos servicios de ejemplo
+INSERT INTO servicios (nombre, descripcion, duracion, precio) VALUES
+('Consulta General', 'Consulta médica general', 30, 250.00),
+('Consulta Especializada', 'Consulta con médico especialista', 45, 500.00),
+('Análisis de Laboratorio', 'Análisis clínicos básicos', 15, 300.00),
+('Vacunación', 'Aplicación de vacunas', 20, 150.00);
+```
