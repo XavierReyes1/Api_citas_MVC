@@ -1,0 +1,17 @@
+#Archivo con todas las variables de entorno que se usan:
+
+PORT=3000
+
+DB_HOST=localhost
+
+DB_USER=root
+
+DB_PASSWORD=root
+
+DB_NAME=clinica_citas
+
+JWT_SECRET=
+
+JWT_EXPIRES_IN=24h
+
+NODE_ENV=development
