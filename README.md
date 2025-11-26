@@ -39,7 +39,7 @@ Authorization: Bearer tu_token_aqui
 
 #### Registrar Usuario
 ```http
-POST /api/auth/register
+POST http://localhost:3000/api/auth/register
 Content-Type: application/json
 
 {
@@ -68,7 +68,7 @@ Content-Type: application/json
 
 Para administrador:
 ```http
-POST /api/auth/login
+POST http://localhost:3000/api/auth/login
 Content-Type: application/json
 
 {
@@ -78,7 +78,7 @@ Content-Type: application/json
 ```
 Para usuario:
 ```http
-POST /api/auth/login
+POST http://localhost:3000/api/auth/login
 Content-Type: application/json
 
 {
@@ -103,7 +103,7 @@ Content-Type: application/json
 
 #### Obtener Perfil
 ```http
-GET /api/auth/profile
+GET http://localhost:3000/api/auth/profile
 Authorization: Bearer tu_token
 ```
 
@@ -113,7 +113,7 @@ Authorization: Bearer tu_token
 
 #### Listar Servicios (Público)
 ```http
-GET /api/servicios
+GET http://localhost:3000/api/servicios
 ```
 
 **Respuesta:**
@@ -135,12 +135,12 @@ GET /api/servicios
 
 #### Obtener Servicio por ID
 ```http
-GET /api/servicios/1
+GET http://localhost:3000/api/servicios/1
 ```
 
 #### Crear Servicio (Admin)
 ```http
-POST /api/servicios
+POST http://localhost:3000/api/servicios
 Authorization: Bearer token_admin
 Content-Type: application/json
 
@@ -155,7 +155,7 @@ Content-Type: application/json
 
 #### Actualizar Servicio (Admin)
 ```http
-PUT /api/servicios/1
+PUT http://localhost:3000/api/servicios/1
 Authorization: Bearer token_admin
 Content-Type: application/json
 
@@ -170,7 +170,7 @@ Content-Type: application/json
 
 #### Eliminar Servicio (Admin)
 ```http
-DELETE /api/servicios/1
+DELETE http://localhost:3000/api/servicios/1
 Authorization: Bearer token_admin
 ```
 
@@ -180,7 +180,7 @@ Authorization: Bearer token_admin
 
 #### Ver Mis Citas (Cliente)
 ```http
-GET /api/citas
+GET http://localhost:3000/api/citas
 Authorization: Bearer token_cliente
 ```
 
@@ -205,7 +205,7 @@ Authorization: Bearer token_cliente
 
 #### Crear Cita (Cliente)
 ```http
-POST /api/citas
+POST http://localhost:3000/api/citas
 Authorization: Bearer token_cliente
 Content-Type: application/json
 
@@ -216,34 +216,6 @@ Content-Type: application/json
   "notas": "Primera consulta"
 }
 ```
-## 📁 Estructura del Proyecto
-
-```
-api-citas/
-├── server.js                 # Punto de entrada
-├── .env                      # Variables de entorno
-├── package.json             # Dependencias
-├── config/
-│   └── database.js          # Configuración de MySQL
-├── middlewares/
-│   ├── auth.js              # Autenticación JWT
-│   └── errorHandler.js      # Manejo de errores
-├── models/
-│   ├── User.js              # Modelo Usuario
-│   ├── Servicio.js          # Modelo Servicio
-│   └── Cita.js              # Modelo Cita
-├── controllers/
-│   ├── authController.js    # Lógica de autenticación
-│   ├── servicioController.js # Lógica de servicios
-│   └── citaController.js    # Lógica de citas
-├── routes/
-│   ├── authRoutes.js        # Rutas de autenticación
-│   ├── servicioRoutes.js    # Rutas de servicios
-│   └── citaRoutes.js        # Rutas de citas
-└── utils/
-    └── validators.js        # Funciones de validación
-```
-
 
 
 **Validaciones automáticas:**
@@ -254,19 +226,19 @@ api-citas/
 
 #### Cancelar Cita (Cliente)
 ```http
-DELETE /api/citas/1
+DELETE http://localhost:3000/api/citas/1
 Authorization: Bearer token_cliente
 ```
 
 #### Ver Todas las Citas (Admin)
 ```http
-GET /api/citas/admin/todas
+GET http://localhost:3000/api/citas/admin/todas
 Authorization: Bearer token_admin
 ```
 
 #### Actualizar Estado de Cita (Admin)
 ```http
-PATCH /api/citas/admin/1/estado
+PATCH http://localhost:3000/api/citas/admin/1/estado
 Authorization: Bearer token_admin
 Content-Type: application/json
 
@@ -298,42 +270,36 @@ Estados válidos: `pendiente`, `confirmada`, `cancelada`, `completada`
 
 ---
 
-## 🧪 Pruebas con cURL
 
-### Registrar usuario
-```bash
-curl -X POST http://localhost:3000/api/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{
-    "nombre": "Juan Pérez",
-    "email": "juan@example.com",
-    "password": "Password123",
-    "telefono": "12345678"
-  }'
+
+## 📁 Estructura del Proyecto
+
+```
+api-citas/
+├── server.js                 # Punto de entrada
+├── .env                      # Variables de entorno
+├── package.json             # Dependencias
+├── config/
+│   └── database.js          # Configuración de MySQL
+├── middlewares/
+│   ├── auth.js              # Autenticación JWT
+│   └── errorHandler.js      # Manejo de errores
+├── models/
+│   ├── User.js              # Modelo Usuario
+│   ├── Servicio.js          # Modelo Servicio
+│   └── Cita.js              # Modelo Cita
+├── controllers/
+│   ├── authController.js    # Lógica de autenticación
+│   ├── servicioController.js # Lógica de servicios
+│   └── citaController.js    # Lógica de citas
+├── routes/
+│   ├── authRoutes.js        # Rutas de autenticación
+│   ├── servicioRoutes.js    # Rutas de servicios
+│   └── citaRoutes.js        # Rutas de citas
+└── utils/
+    └── validators.js        # Funciones de validación
 ```
 
-### Login
-```bash
-curl -X POST http://localhost:3000/api/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{
-    "email": "juan@example.com",
-    "password": "Password123"
-  }'
-```
-
-### Crear cita (guarda el token del login)
-```bash
-curl -X POST http://localhost:3000/api/citas \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer TU_TOKEN_AQUI" \
-  -d '{
-    "servicio_id": 1,
-    "fecha": "2025-11-25",
-    "hora": "10:00",
-    "notas": "Primera consulta"
-  }'
-```
 
 ---
 
@@ -429,23 +395,7 @@ Ejemplo de respuesta de error:
 }
 ```
 
----
 
-## 🚧 Mejoras Futuras (Opcionales)
-
-- [ ] Paginación en listados
-- [ ] Filtros y búsquedas avanzadas
-- [ ] Sistema de notificaciones por email
-- [ ] Recordatorios de citas
-- [ ] Dashboard de estadísticas
-- [ ] Rate limiting
-- [ ] Logs de auditoría
-- [ ] Tests unitarios y de integración
-- [ ] Documentación con Swagger
-- [ ] Docker para deployment
-
-
----
 
 ## 🎯 Notas Importantes
 
